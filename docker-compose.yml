@@ -32,10 +32,8 @@ services:
     depends_on:
       - zammad-postgresql
     environment:
-      - MEMCACHE_SERVERS=${MEMCACHE_SERVERS}
       - POSTGRESQL_USER=${POSTGRES_USER}
       - POSTGRESQL_PASS=${POSTGRES_PASS}
-      - REDIS_URL=${REDIS_URL}
     image: ${IMAGE_REPO}:zammad${VERSION}
     restart: on-failure
     deploy:
@@ -46,30 +44,7 @@ services:
              memory: 50M  
     volumes:
       - /var/lib/docker/volumes/zammad_zammad-data/_data:/opt/zammad
-  zammad-elasticsearch:
-    environment:
-      - discovery.type=single-node
-    image: ${IMAGE_REPO}:zammad-elasticsearch${VERSION}
-    restart: ${RESTART}
-    deploy:
-        resources:
-          limits:
-            memory: 8500M
-          reservations:
-             memory: 5000M  
-    volumes:
-      - elasticsearch-data:/usr/share/elasticsearch/data
 
-  zammad-memcached:
-    command: memcached -m 256M
-    image: memcached:1.6.10-alpine
-    restart: ${RESTART}
-    deploy:
-        resources:
-          limits:
-            memory: 50M
-          reservations:
-             memory: 25M  
 
   zammad-nginx:
     command: ["zammad-nginx"]
@@ -106,12 +81,7 @@ services:
   zammad-railsserver:
     command: ["zammad-railsserver"]
     depends_on:
-      - zammad-memcached
-      - zammad-postgresql
-      - zammad-redis
-    environment:
-      - MEMCACHE_SERVERS=${MEMCACHE_SERVERS}
-      - REDIS_URL=${REDIS_URL}
+     - zammad-postgresql  
     image: ${IMAGE_REPO}:zammad${VERSION}
     restart: ${RESTART}
     deploy:
@@ -123,25 +93,11 @@ services:
     volumes:
       - /var/lib/docker/volumes/zammad_zammad-data/_data:/opt/zammad
 
-  zammad-redis:
-    image: redis:6.2.5-alpine
-    restart: ${RESTART}
-    deploy:
-        resources:
-          limits:
-            memory: 15M
-          reservations:
-             memory: 10M  
 
   zammad-scheduler:
     command: ["zammad-scheduler"]
     depends_on:
-      - zammad-memcached
       - zammad-railsserver
-      - zammad-redis
-    environment:
-      - MEMCACHE_SERVERS=${MEMCACHE_SERVERS}
-      - REDIS_URL=${REDIS_URL}
     image: ${IMAGE_REPO}:zammad${VERSION}
     restart: ${RESTART}
     deploy:
@@ -156,12 +112,7 @@ services:
   zammad-websocket:
     command: ["zammad-websocket"]
     depends_on:
-      - zammad-memcached
       - zammad-railsserver
-      - zammad-redis
-    environment:
-      - MEMCACHE_SERVERS=${MEMCACHE_SERVERS}
-      - REDIS_URL=${REDIS_URL}
     image: ${IMAGE_REPO}:zammad${VERSION}
     restart: ${RESTART}
     deploy:
