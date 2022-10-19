@@ -47,19 +47,6 @@ services:
              memory: 50M  
     volumes:
       - /var/lib/docker/volumes/zammad_zammad-data/_data:/opt/zammad
-  zammad-elasticsearch:
-    environment:
-      - discovery.type=single-node
-    image: ${IMAGE_REPO}:zammad-elasticsearch${VERSION}
-    restart: ${RESTART}
-    deploy:
-        resources:
-          limits:
-            memory: 8500M
-          reservations:
-             memory: 5000M  
-    volumes:
-      - elasticsearch-data:/usr/share/elasticsearch/data
 
   zammad-memcached:
     command: memcached -m 256M
