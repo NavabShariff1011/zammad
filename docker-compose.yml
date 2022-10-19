@@ -16,36 +16,61 @@ services:
       - POSTGRESQL_PASSWORD=${POSTGRES_PASS}
     image: ${IMAGE_REPO}:zammad-postgresql${VERSION}
     restart: ${RESTART}
+    deploy:
+      resources:
+        limits:
+          memory: 50M
+        reservations:
+          memory: 25M
     volumes:
       - /var/lib/docker/volumes/zammad_zammad-backup/_data:/var/tmp/zammad
       - /var/lib/docker/volumes/zammad_zammad-data/_data:/opt/zammad
 
-  zammad-elasticsearch:
-    environment:
-      - discovery.type=single-node
-    image: ${IMAGE_REPO}:zammad-elasticsearch${VERSION}
-    restart: ${RESTART}
-    volumes:
-      - /var/lib/docker/volumes/zammad_elasticsearch-data/_data:/usr/share/elasticsearch/data
 
   zammad-init:
     command: ["zammad-init"]
     depends_on:
       - zammad-postgresql
     environment:
+      - ELASTICSEARCH_ENABLED=${ELASTICSEARCH_ENABLED}
       - MEMCACHE_SERVERS=${MEMCACHE_SERVERS}
       - POSTGRESQL_USER=${POSTGRES_USER}
       - POSTGRESQL_PASS=${POSTGRES_PASS}
       - REDIS_URL=${REDIS_URL}
     image: ${IMAGE_REPO}:zammad${VERSION}
     restart: on-failure
+    deploy:
+        resources:
+          limits:
+            memory: 100M
+          reservations:
+             memory: 50M  
     volumes:
       - /var/lib/docker/volumes/zammad_zammad-data/_data:/opt/zammad
+  zammad-elasticsearch:
+    environment:
+      - discovery.type=single-node
+    image: ${IMAGE_REPO}:zammad-elasticsearch${VERSION}
+    restart: ${RESTART}
+    deploy:
+        resources:
+          limits:
+            memory: 8500M
+          reservations:
+             memory: 5000M  
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
 
   zammad-memcached:
     command: memcached -m 256M
     image: memcached:1.6.10-alpine
     restart: ${RESTART}
+    deploy:
+        resources:
+          limits:
+            memory: 50M
+          reservations:
+             memory: 25M  
 
   zammad-nginx:
     command: ["zammad-nginx"]
@@ -55,6 +80,12 @@ services:
       - zammad-railsserver
     image: ${IMAGE_REPO}:zammad${VERSION}
     restart: ${RESTART}
+    deploy:
+        resources:
+          limits:
+            memory: 75M
+          reservations:
+             memory: 50M  
     volumes:
       - /var/lib/docker/volumes/zammad_zammad-data/_data:/opt/zammad
 
@@ -64,6 +95,12 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASS}
     image: ${IMAGE_REPO}:zammad-postgresql${VERSION}
     restart: ${RESTART}
+    deploy:
+        resources:
+          limits:
+            memory: 512M
+          reservations:
+             memory: 100M  
     volumes:
       - /var/lib/docker/volumes/zammad_postgresql-data/_data:/var/lib/postgresql/data
 
@@ -78,12 +115,24 @@ services:
       - REDIS_URL=${REDIS_URL}
     image: ${IMAGE_REPO}:zammad${VERSION}
     restart: ${RESTART}
+    deploy:
+        resources:
+          limits:
+            memory: 450M
+          reservations:
+             memory: 350M  
     volumes:
       - /var/lib/docker/volumes/zammad_zammad-data/_data:/opt/zammad
 
   zammad-redis:
     image: redis:6.2.5-alpine
     restart: ${RESTART}
+    deploy:
+        resources:
+          limits:
+            memory: 15M
+          reservations:
+             memory: 10M  
 
   zammad-scheduler:
     command: ["zammad-scheduler"]
@@ -96,6 +145,12 @@ services:
       - REDIS_URL=${REDIS_URL}
     image: ${IMAGE_REPO}:zammad${VERSION}
     restart: ${RESTART}
+    deploy:
+        resources:
+          limits:
+            memory: 335M
+          reservations:
+             memory: 270M  
     volumes:
       - /var/lib/docker/volumes/zammad_zammad-data/_data:/opt/zammad
 
@@ -110,6 +165,12 @@ services:
       - REDIS_URL=${REDIS_URL}
     image: ${IMAGE_REPO}:zammad${VERSION}
     restart: ${RESTART}
+    deploy:
+        resources:
+          limits:
+            memory: 250M
+          reservations:
+             memory: 175M  
     volumes:
       - /var/lib/docker/volumes/zammad_zammad-data/_data:/opt/zammad
 
