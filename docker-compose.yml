@@ -32,7 +32,6 @@ services:
     depends_on:
       - zammad-postgresql
     environment:
-      - ELASTICSEARCH_ENABLED=${ELASTICSEARCH_ENABLED}
       - MEMCACHE_SERVERS=${MEMCACHE_SERVERS}
       - POSTGRESQL_USER=${POSTGRES_USER}
       - POSTGRESQL_PASS=${POSTGRES_PASS}
