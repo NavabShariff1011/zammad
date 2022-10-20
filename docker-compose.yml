@@ -58,7 +58,7 @@ services:
           reservations:
              memory: 5000M  
     volumes:
-      - elasticsearch-data:/usr/share/elasticsearch/data
+      - /var/lib/docker/volumes/zammad_elasticsearch-data/_data:/usr/share/elasticsearch/data
 
   zammad-memcached:
     command: memcached -m 256M
