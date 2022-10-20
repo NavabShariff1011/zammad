@@ -23,8 +23,8 @@ services:
         reservations:
           memory: 25M
     volumes:
-      - /var/lib/docker/volumes/zammad_zammad-backup/_data:/var/tmp/zammad
-      - /var/lib/docker/volumes/zammad_zammad-data/_data:/opt/zammad
+      - /home/webelight-004/zammad-backup:/var/tmp/zammad
+      - /home/webelight-004/zammad-data:/opt/zammad
 
 
   zammad-init:
@@ -45,7 +45,7 @@ services:
           reservations:
              memory: 50M  
     volumes:
-      - /var/lib/docker/volumes/zammad_zammad-data/_data:/opt/zammad
+      - /home/webelight-004/zammad-data:/opt/zammad
   zammad-elasticsearch:
     environment:
       - discovery.type=single-node
@@ -58,7 +58,7 @@ services:
           reservations:
              memory: 5000M  
     volumes:
-      - /var/lib/docker/volumes/zammad_elasticsearch-data/_data:/usr/share/elasticsearch/data
+      - /home/webelight-004/elasticsearch-data:/usr/share/elasticsearch/data
 
   zammad-memcached:
     command: memcached -m 256M
@@ -86,7 +86,7 @@ services:
           reservations:
              memory: 50M  
     volumes:
-      - /var/lib/docker/volumes/zammad_zammad-data/_data:/opt/zammad
+      - /home/webelight-004/zammad-data:/opt/zammad
 
   zammad-postgresql:
     environment:
@@ -101,7 +101,7 @@ services:
           reservations:
              memory: 100M  
     volumes:
-      - /var/lib/docker/volumes/zammad_postgresql-data/_data:/var/lib/postgresql/data
+      - /home/webelight-004/postgresql-data:/var/lib/postgresql/data
 
   zammad-railsserver:
     command: ["zammad-railsserver"]
@@ -121,7 +121,7 @@ services:
           reservations:
              memory: 350M  
     volumes:
-      - /var/lib/docker/volumes/zammad_zammad-data/_data:/opt/zammad
+      - /home/webelight-004/zammad-data:/opt/zammad
 
   zammad-redis:
     image: redis:6.2.5-alpine
@@ -151,7 +151,7 @@ services:
           reservations:
              memory: 270M  
     volumes:
-      - /var/lib/docker/volumes/zammad_zammad-data/_data:/opt/zammad
+      - /home/webelight-004/zammad-data:/opt/zammad
 
   zammad-websocket:
     command: ["zammad-websocket"]
@@ -171,5 +171,5 @@ services:
           reservations:
              memory: 175M  
     volumes:
-      - /var/lib/docker/volumes/zammad_zammad-data/_data:/opt/zammad
+      - /home/webelight-004/zammad-data:/opt/zammad
 
