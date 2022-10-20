@@ -1,5 +1,8 @@
 # Welcome to Zammad
 
+Before run "docker-compose up  -d" command you need to see on docker volumes so make sure first you need to create folders from your home directories  for example currently your in "/home/ubuntu" 
+so create four directories for backup of zammad application those four folders are zammad-data,zammad-backup,postgresql-data and elasticsearch-data  so your volume persistents becomes "/home/ubuntu/elasticsearch-data", "home/ubuntu/zammad-data", "home/ubuntu/zammad-backup" and "home/ubuntu/postgresql-data"  so according to this is you need to change in compose yml file . you also create volumes through docker-compose file but it will create volume with your current folder for example your in folder of zammad1 where your docker-compose configuration files exist from here if you apply "docker-compose up -d" what docker-compose will do is it will create volume with folder name under "/var/lib/docker/volumes" for example "/var/lib/docker/volumes/zammad1_elasticsearch-data" so tomorrow if apply this file from any another folder like zammad2  it will create again new volume with "/var/lib/docker/volumes/zammad2_elasticsearch-data"  and you can't get your data persistent again either you can change your configuration file with "/var/lib/docker/volumes/zammad1_elasticsearch-data" so avoiding this first we fix a folder for our backups then we proceed
+
 Zammad is a web based open source helpdesk/ticket system with many features
 to manage customer communication via several channels like telephone, facebook,
 twitter, chat and emails. It is distributed under the GNU AFFERO General Public
